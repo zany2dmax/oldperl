@@ -1,0 +1,15 @@
+#!/usr/bin/perl
+
+use strict;
+
+# sudo wrapper for userdel
+
+print "Do you want to delete home directory? [Yn] ";
+chomp ( my $answer = <STDIN>);
+$answer ||= 'y';
+$answer = lc $answer;
+my @command = ($answer eq 'y' ? ("/usr/sbin/userdel","-r") : ("/usr/sbin/userdel"));
+my @run;
+push @run, "/usr/bin/sudo", @command, @ARGV;
+#printf "running %s\n", (join " ", @run);
+exec @run;

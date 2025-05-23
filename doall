@@ -1,0 +1,4 @@
+#!/usr/bin/perl
+
+# sudo wrapper for doall.pl
+exec ("/usr/bin/sudo", "/usr/local/scripts/doall.pl", @ARGV);

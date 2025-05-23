@@ -1,0 +1,8 @@
+#!/usr/bin/perl
+
+use strict;
+# sudo wrapper for setexpire.pl
+my @run;
+push @run, "/usr/bin/sudo", "/usr/local/scripts/setexpire.pl", @ARGV;
+#printf "running %s\n", (join " ", @run);
+exec @run;

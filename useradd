@@ -1,0 +1,8 @@
+#!/usr/bin/perl
+
+use strict;
+# sudo wrapper for useradd.pl
+my @run;
+push @run, "/usr/bin/sudo", "/usr/local/scripts/useradd.pl", @ARGV;
+#printf "running %s\n", (join " ", @run);
+exec @run;

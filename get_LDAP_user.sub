@@ -1,0 +1,46 @@
+#!/usr/bin/perl
+
+sub get_LDAP_user {
+   my $user = shift;
+   use Net::LDAP; 
+   my $return = undef;
+   my $ldap = Net::LDAP->new('10.0.75.180') or die "$@ $!"; 
+   #Obviosuly change the user to a correct domain
+   my $DN = 'ldapquery@AD.DOMAIN.NET';
+   # Having a hardcoded read-only user is currently a limitation
+   # Would require extensive coding to get around this lookup user otherwise
+   $ldap->bind(dn=>$DN, password => "HARDPASSWORD"); 
+   my $mesg = $ldap->search(
+   base =>'dc=adm,dc=domain,dc=net', filter => "(sAMAccountName=$user)"
+           );
+   $mesg->code && die $mesg->error; 
+   my $nument = scalar $mesg->all_entries;
+   if ( $nument > 1 ) {
+      my $mess = "$user matched $nument entries. Please select which user is correct.";
+      my %user = ();
+      foreach my $entry ($mesg->all_entries) {
+         #my $uname = lc $entry->get_value('cn');
+         my $uname = lc $entry->get_value('sAMAccountName');
+         #my $email = lc $entry->get_value('mail');
+         my $email = $uname . '@peer1.com';
+         my $name = $entry->get_value('displayName');
+	 $user{$uname} = {'email'=>$email,'name'=>$name};
+      }
+      my $selected = &selectuser(\%user,$mess); 
+      $return = {'uname'=>$selected,'email'=>$user{'email'},'name'=>$user{'name'}};
+   } elsif ( $nument) {
+      my $entry = ($mesg->all_entries)[0];
+      my $uname = lc $entry->get_value('sAMAccountName');
+      #my $email = lc $entry->get_value('mail');
+      my $email = $uname . '@peer1.com';
+      my $name = $entry->get_value('displayName');
+      $return = {'uname'=>$uname,'email'=>$email,'name'=>$name};
+      print "$user verified to exist in corporate domain: email=$email name=$name\n";
+   } else {
+      print "$user not found in corporate domain.\n";
+      $return = &search_user;
+   }
+   $ldap->unbind;
+   return $return;
+}
+

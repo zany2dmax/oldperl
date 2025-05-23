@@ -1,0 +1,3 @@
+#!/usr/bin/perl
+
+exec ("/usr/bin/sudo","/usr/local/scripts/passdist.pl",@ARGV);

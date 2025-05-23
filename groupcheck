@@ -1,0 +1,5 @@
+#!/usr/bin/perl
+
+use strict;
+# sudo wrapper for grpck
+exec ("/usr/bin/sudo","/usr/sbin/grpck"),@ARGV;

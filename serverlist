@@ -1,0 +1,3 @@
+#!/usr/bin/perl
+
+exec ("/usr/local/scripts/doall","--list=full");

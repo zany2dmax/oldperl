@@ -1,0 +1,3 @@
+#!/usr/bin/perl
+
+exec("/usr/bin/sudo","/usr/bin/ssh","-i","/root/.ssh/otherkeys/bluehalo/id_dsa_bhroot",@ARGV);

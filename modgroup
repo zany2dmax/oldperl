@@ -1,0 +1,8 @@
+#!/usr/bin/perl
+
+use strict;
+# sudo wrapper for modgroup.pl
+my @run;
+push @run, "/usr/bin/sudo", "/usr/local/scripts/modgroupname.pl", @ARGV;
+#printf "running %s\n", (join " ", @run);
+exec @run;

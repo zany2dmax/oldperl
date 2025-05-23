@@ -1,0 +1,19 @@
+# Install and Import Exchange Online Module (if not installed)
+Install-Module -Name ExchangeOnlineManagement -Scope CurrentUser -Force -ErrorAction SilentlyContinue
+Import-Module ExchangeOnlineManagement
+
+# Connect to Exchange Online (Prompt for credentials)
+$UserPrincipalName = Read-Host "Enter your Exchange Admin UPN (e.g., admin@yourdomain.com)"
+Connect-ExchangeOnline -UserPrincipalName $UserPrincipalName
+
+# Define Output File Path
+$OutputFile = "C:\Exchange_TransportRules.csv"
+
+# Retrieve and Export Transport Rules
+$rules = Get-TransportRule | Select-Object Name, Priority, Conditions, Actions, Exceptions, Comments, Enabled
+$rules | Export-Csv -Path $OutputFile -NoTypeInformation
+
+Write-Host "Transport rules have been exported to: $OutputFile" -ForegroundColor Green
+
+# Disconnect from Exchange Online
+Disconnect-ExchangeOnline -Confirm:$false

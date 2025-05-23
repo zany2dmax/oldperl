@@ -1,0 +1,6 @@
+#!/usr/bin/perl
+
+print "Enter Username: ";
+chomp (my $username = <STDIN>);
+exec ("/usr/local/scripts/userlist.pl","-u",$username,"-g");
+

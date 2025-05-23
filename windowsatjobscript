@@ -1,0 +1,21 @@
+REM (SystemList) (Time for At Job) 
+@echo off
+echo Initializing
+
+echo Lets begin.
+set sourcefile=%1
+for /f %%i in ('type %sourcefile%') do call :install %%i %2 
+goto :EOF
+
+:install
+echo Starting on %1
+
+echo 	Copying Files
+mkdir \\%1\c$\ibin
+mkdir \\%1\c$\ibin\patchlink
+copy /y *.msi \\%1\c$\ibin\patchlink
+copy /y *.bat \\%1\c$\ibin\patchlink
+
+
+echo    Setting At Job
+at \\%1 %2 c:\ibin\patchlink\install.bat
